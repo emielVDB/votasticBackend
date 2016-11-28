@@ -18,7 +18,8 @@ router.post('/', function(req, res, next) {
         atExpirationDate: Date.now() + 1,
         refreshToken: makeid(50),
         birthDay: birthDay,
-        gender: gender
+        gender: gender,
+        followingPages: []
     });
 
     user.save(function (err, result) {

@@ -15,43 +15,20 @@ var pollsService = require('../../../services/pollsService');
 router.post('/', function(req, res, next) {
 
     console.log(JSON.stringify(req.body));
-    // try{
-    //     var promise = new PollRequest().fromInputObject(req.body);
-    // }catch (err){
-    //     res.json({
-    //         "_id": "",
-    //         "question": "",
-    //         "tags": [],
-    //         "options": [],
-    //         "choiceIndex": -1, // -1 ": geen keuze
-    //         "totalVotes": 0,
-    //         "totalReactions": 0
-    //     });
-    // }
-    //
-    // promise.then(function(pollRequest){
-    //     return pollRequest.toPollObject();
-    // }).then(function (poll) {
-    //     return pollsService.savePoll(poll);
-    // }).then(function(savingResult){
-    //     return new PollResponse().fromDBObject(savingResult);
-    // }).then(function (pollResponse){
-    //     res.json(pollResponse);
-    // }).
-    // catch(function (err) {
-    //     console.error("ERR:", err);
-    // });
 
-    res.json({
-        "_id": "",
-        "question": "",
-        "tags": [],
-        "options": [],
-        "choiceIndex": -1, // -1 ": geen keuze
-        "totalVotes": 0,
-        "totalReactions": 0
+    var promise = new PollRequest().fromInputObject(req.body, req.userId);
+    promise.then(function(pollRequest){
+        return pollRequest.toPollObject();
+    }).then(function (poll) {
+        return pollsService.savePoll(poll);
+    }).then(function(savingResult){
+        return new PollResponse().fromDBObject(savingResult);
+    }).then(function (pollResponse){
+        res.json(pollResponse);
+    }).
+    catch(function (err) {
+        console.error("ERR:", err);
     });
-
 });
 
 

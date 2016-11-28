@@ -5,7 +5,7 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var schema = new Schema({
-    userId: String,
+    userId: Schema.Types.ObjectId,
     question: String,
     options: [{
         content: String,
@@ -18,7 +18,11 @@ var schema = new Schema({
     }],
 
     reactions: [String],
-    tags: [String]
+    tags: [String],
+    uploadTime: Date,
+
+    pageId: Schema.Types.ObjectId,
+    pageTitle: String
 });
 
 module.exports = mongoose.model("Poll", schema);

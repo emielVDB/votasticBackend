@@ -10,7 +10,8 @@ var schema = new Schema({
     atExpirationDate: Date,
     refreshToken: String,
     birthDay: Date,
-    gender: Number
+    gender: Number,
+    followingPages: [Schema.Types.ObjectId]
 });
 
 module.exports = mongoose.model("User", schema);
