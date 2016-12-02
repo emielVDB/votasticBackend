@@ -31,7 +31,6 @@ function pollResponse() {
             resolve(self);
         });
     };
-
 }
 
 module.exports = pollResponse;

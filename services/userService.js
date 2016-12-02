@@ -15,6 +15,49 @@ function getUserByToken(tokenInput) {
     });
 }
 
+function addFollow(pageId, userId) {
+    return new Promise(function (resolve, reject) {
+        User.findByIdAndUpdate(
+            userId,
+            {$push: {"followingPages": pageId}},
+            {safe: true, upsert: true, new : true},
+            function(err, model) {
+                if(err != null) return reject(err);
+
+                resolve(model);
+            }
+        );
+    });
+}
+
+function deleteFollow(pageId, userId) {
+    return new Promise(function (resolve, reject) {
+        User.findByIdAndUpdate(
+            userId,
+            {$pull: {"followingPages": pageId}},
+            {safe: true, upsert: true, new : true},
+            function(err, model) {
+                if(err != null) return reject(err);
+
+                resolve(model);
+            }
+        );
+    });
+}
+
+function getFollows(userId) {
+    return new Promise(function (resolve, reject) {
+        User.findOne({_id: userId}, "followingPages", function (err, result) {
+            if(err != null) reject(err);
+
+            resolve(result.followingPages);
+        });
+    });
+}
+
 module.exports = {
-    getUserByToken: getUserByToken
+    getUserByToken: getUserByToken,
+    addFollow: addFollow,
+    deleteFollow: deleteFollow,
+    getFollows: getFollows
 };

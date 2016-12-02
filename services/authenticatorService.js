@@ -3,7 +3,8 @@
  */
 var userService = require("./userService");
 function authenticate(req, res, next) {
-    if(req.url == "/api/user/register"){
+    if(req.url == "/api/user/register"
+    || req.url.startsWith("/images/")){
         next();
         return;
     }

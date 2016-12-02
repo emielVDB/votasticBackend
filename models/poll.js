@@ -3,6 +3,7 @@
  */
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
+var random = require('mongoose-simple-random');
 
 var schema = new Schema({
     userId: Schema.Types.ObjectId,
@@ -24,5 +25,6 @@ var schema = new Schema({
     pageId: Schema.Types.ObjectId,
     pageTitle: String
 });
+schema.plugin(random);
 
 module.exports = mongoose.model("Poll", schema);

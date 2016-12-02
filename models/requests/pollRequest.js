@@ -3,6 +3,8 @@
  */
 var Promise = require('promise');
 var mongoose = require('mongoose');
+var pageService = require('../../services/pageService');
+
 function pollRequest() {
 
     var Poll = require("../poll");
@@ -32,27 +34,52 @@ function pollRequest() {
     this.toPollObject = function () {
         return new Promise(function (resolve, reject) {
             var options = [];
+            var pageId = null;
+            var pageTitle = null;
             for(var loopnr = 0; loopnr < self.options.length; loopnr++){
                 options.push({content: self.options[loopnr], votes: 0});
             }
 
-            //todo: pageName ophalen van pageId, reject als niet van de juiste user is
+            if(self.pageId == null){
+                returnPoll();
+            }else {
+                //todo: pageName ophalen van pageId, reject als niet van de juiste user is
+                pageService.getPageById(self.pageId)
+                    .then(function (result) {
+                        if (result == null) {
+                            return reject(new Error("Page id not correct"));
+                        }
+                        if (result.userId.toString() != self.userId) {
+                            return reject(new Error("can't add a poll to someone elses page"));
+                        }
 
-            var poll = new Poll({
-                question: self.question,
-                userId:  mongoose.Types.ObjectId(self.userId),
-                options: options,
-                votes: [],
-                reactions: [],
-                tags: self.tags,
-                uploadTime: self.uploadTime,
-                pageId: null,
-                pageTitle: null
-            });
+                        pageId = mongoose.Types.ObjectId(self.pageId);
+                        pageTitle = result.title;
 
-            resolve(poll);
+                        returnPoll();
+                    }).catch(function (err) {
+                    reject(err);
+                });
+            }
+
+            function returnPoll() {
+                var poll = new Poll({
+                    question: self.question,
+                    userId: mongoose.Types.ObjectId(self.userId),
+                    options: options,
+                    votes: [],
+                    reactions: [],
+                    tags: self.tags,
+                    uploadTime: self.uploadTime,
+                    pageId: pageId,
+                    pageTitle: pageTitle
+                });
+
+                resolve(poll);
+            }
         });
     }
+
 }
 
 module.exports = pollRequest;
