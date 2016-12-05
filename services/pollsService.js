@@ -58,9 +58,25 @@ function findByPageIdList(pageIdList, maxUploadTime) {
     });
 }
 
+function findByPageId(pageIdRequest) {
+    return new Promise(function (resolve, reject) {
+        Poll.find({"pageId": pageIdRequest.pageId}).
+        where('uploadTime').lt(pageIdRequest.maxUploadTime).
+        sort('-uploadTime').
+        limit(6).
+        exec(function(err, results) {
+            if (err) return reject(err);
+
+            resolve(results); // 5 elements
+
+        });
+    });
+}
+
 module.exports = {
     savePoll: savePoll,
     getTenRandomPolls: getTenRandomPolls,
     findPolls: findPolls,
-    findByPageIdList: findByPageIdList
+    findByPageIdList: findByPageIdList,
+    findByPageId: findByPageId
 };

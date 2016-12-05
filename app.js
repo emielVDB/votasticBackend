@@ -18,6 +18,7 @@ var apiMyFollows = require('./routes/api/my/follows');
 var apiPollsRandom = require('./routes/api/polls/random');
 var apiPollsFind = require('./routes/api/polls/find');
 var apiPollsNews = require('./routes/api/polls/news');
+var apiPollsPageId = require('./routes/api/polls/pageid');
 
 var app = express();
 
@@ -44,6 +45,7 @@ app.use('/api/my/follows', apiMyFollows);
 app.use('/api/polls/random', apiPollsRandom);
 app.use('/api/polls/find', apiPollsFind);
 app.use('/api/polls/news', apiPollsNews);
+app.use('/api/polls/pageid', apiPollsPageId);
 
 
 // catch 404 and forward to error handler
