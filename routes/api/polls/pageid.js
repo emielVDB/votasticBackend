@@ -7,7 +7,6 @@ var router = express.Router();
 var PollsInPageRequest = require('../../../models/requests/pollsInPageRequest');
 var PollListResponse = require('../../../models/responses/pollListResponse');
 var pollsService = require('../../../services/pollsService');
-var usersService = require('../../../services/userService');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {

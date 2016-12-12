@@ -73,10 +73,33 @@ function findByPageId(pageIdRequest) {
     });
 }
 
+function addVote(pollId, voteIndex, userId) {
+
+    return new Promise(function (resolve, reject) {
+        var incObject = {};
+        incObject['options.'+voteIndex+'.votes'] = 1;
+
+        Poll.findByIdAndUpdate(
+            pollId,
+            {$push: {"votes": {
+                userId: userId,
+                voteIndex: voteIndex}},
+            $inc: incObject},
+            {safe: true, upsert: true, new : true},
+            function(err, model) {
+                if(err != null) return reject(err);
+
+                resolve(model);
+            }
+        );
+    });
+}
+
 module.exports = {
     savePoll: savePoll,
     getTenRandomPolls: getTenRandomPolls,
     findPolls: findPolls,
     findByPageIdList: findByPageIdList,
-    findByPageId: findByPageId
+    findByPageId: findByPageId,
+    addVote: addVote
 };
