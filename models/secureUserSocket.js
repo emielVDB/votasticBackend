@@ -27,12 +27,17 @@ function secureSocketUser(socket) {
             self.socket.removeAllListeners('authenticate');
             self.socket.on("voteSubmit", voteSubmit);
             self.socket.on("reactionSubmit", reactionSubmit);
+            self.socket.on("join", join);
 
             self.socket.emit("authenticate", "true");
         }).catch(function (err) {
             throw err;
         })
     });
+    
+   function join(roomName) {
+       self.socket.join(roomName);
+   }
 
     function voteSubmit(voteRequest) {
         voteRequest = JSON.parse(voteRequest);
@@ -41,7 +46,9 @@ function secureSocketUser(socket) {
         pollsService.addVote(voteRequest.pollId, voteRequest.voteIndex, self.userId);
         //controleren als nog niet gestemd is ==> later
 
-        self.socket.broadcast.emit('poll'+voteRequest.pollId, JSON.stringify({kind: "vote", voteResponse:{voteIndex: voteRequest.voteIndex}}));
+        self.socket.broadcast
+            .to('poll'+voteRequest.pollId)
+            .emit('poll'+voteRequest.pollId, JSON.stringify({kind: "vote", voteResponse:{voteIndex: voteRequest.voteIndex}}));
 
     }
 
