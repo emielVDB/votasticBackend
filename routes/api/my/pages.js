@@ -22,7 +22,7 @@ router.post('/', function(req, res, next) {
     }).then(function (page) {
         return pageService.savePage(page);
     }).then(function(savingResult){
-        return new PageResponse().fromDBObject(savingResult);
+        return new PageResponse().fromDBObject(savingResult, req.userId);
     }).then(function (pageResponse){
         res.json(pageResponse);
     }).

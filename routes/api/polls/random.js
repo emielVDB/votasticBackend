@@ -17,7 +17,7 @@ router.get('/', function(req, res, next) {
     var promise = new pollsService.getTenRandomPolls();
     promise
     .then(function(savingResult){
-        return PollListResponse.fromDBObjectArray(savingResult);
+        return PollListResponse.fromDBObjectArray(savingResult, req.userId);
     }).then(function (pollResponse){
         res.json(pollResponse);
     }).

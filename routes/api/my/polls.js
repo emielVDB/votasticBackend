@@ -22,7 +22,7 @@ router.post('/', function(req, res, next) {
     }).then(function (poll) {
         return pollsService.savePoll(poll);
     }).then(function(savingResult){
-        return new PollResponse().fromDBObject(savingResult);
+        return new PollResponse().fromDBObject(savingResult, req.userId);
     }).then(function (pollResponse){
         res.json(pollResponse);
     }).

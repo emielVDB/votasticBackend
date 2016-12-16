@@ -14,7 +14,7 @@ router.get('/', function(req, res, next) {
     promise.then(function (pollsInPReq) {
         return pollsService.findByPageId(pollsInPReq);
     }).then(function(findResult){
-        return PollListResponse.fromDBObjectArray(findResult);
+        return PollListResponse.fromDBObjectArray(findResult, req.userId);
     }).then(function (pollListResponse){
         res.json(pollListResponse);
     }).

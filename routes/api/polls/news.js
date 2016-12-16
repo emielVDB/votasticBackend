@@ -22,7 +22,7 @@ router.get('/', function(req, res, next) {
     }).then(function(pageIdList){
         return pollsService.findByPageIdList(pageIdList, newsRequest.maxUploadTime)
     }).then(function(findResult){
-        return PollListResponse.fromDBObjectArray(findResult);
+        return PollListResponse.fromDBObjectArray(findResult, req.userId);
     }).then(function (pollListResponse){
         res.json(pollListResponse);
     }).

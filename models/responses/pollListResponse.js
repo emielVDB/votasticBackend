@@ -3,13 +3,13 @@
  */
 var PollResponse = require('./pollResponse');
 
-fromDBObjectArray = function (inputObject) {
+fromDBObjectArray = function (inputObject, userId) {
     return new Promise(function (resolve, reject) {
         var itemsLeft = inputObject.length;
         var responses = [];
         if(itemsLeft == 0) resolve(responses);
         inputObject.forEach(function (item) {
-            new PollResponse().fromDBObject(item).then(function (pollResponseObject) {
+            new PollResponse().fromDBObject(item, userId).then(function (pollResponseObject) {
                 responses.push(pollResponseObject);
                 itemsLeft--;
                 if(itemsLeft == 0){

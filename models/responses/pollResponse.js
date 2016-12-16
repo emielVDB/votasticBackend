@@ -19,7 +19,7 @@ function pollResponse() {
     this.pageId = null;
     this.pageTitle = null;
 
-    this.fromDBObject = function (inputObject) {
+    this.fromDBObject = function (inputObject, userId) {
         return new Promise(function(resolve, reject){
             self.question = inputObject.question;
             self._id = inputObject._id;
@@ -28,9 +28,20 @@ function pollResponse() {
             self.uploadTime = inputObject.uploadTime.getTime();
             self.pageId = inputObject.pageId;
             self.pageTitle = inputObject.pageTitle;
+
+            for(var loopnr = 0; loopnr < inputObject.votes.length && self.choiceIndex == -1; loopnr++){
+                if(userId == inputObject.votes[loopnr].userId){
+                    self.choiceIndex = inputObject.votes[loopnr].voteIndex;
+
+                }
+            }
+
             resolve(self);
+
         });
     };
+
+
 }
 
 module.exports = pollResponse;
