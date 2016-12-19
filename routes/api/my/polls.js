@@ -10,6 +10,7 @@ var constants = require("../../../models/constants");
 var PollRequest = require('../../../models/requests/pollRequest');
 var PollResponse = require('../../../models/responses/pollResponse');
 var pollsService = require('../../../services/pollsService');
+var fcmService = require('../../../services/fcmService');
 
 /* GET home page. */
 router.post('/', function(req, res, next) {
@@ -22,6 +23,9 @@ router.post('/', function(req, res, next) {
     }).then(function (poll) {
         return pollsService.savePoll(poll);
     }).then(function(savingResult){
+        if(savingResult.pageId != null && savingResult.pageTitle != null){
+            fcmService.pollAddedToPage(savingResult);
+        }
         return new PollResponse().fromDBObject(savingResult, req.userId);
     }).then(function (pollResponse){
         res.json(pollResponse);

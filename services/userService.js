@@ -15,6 +15,16 @@ function getUserByToken(tokenInput) {
     });
 }
 
+function getUserById(idInput) {
+    return new Promise(function (resolve, reject) {
+        User.findOne({_id: idInput}, function (err, result) {
+            if(err != null) reject(err);
+
+            resolve(result);
+        });
+    });
+}
+
 function addFollow(pageId, userId) {
     return new Promise(function (resolve, reject) {
         User.findByIdAndUpdate(
@@ -59,5 +69,6 @@ module.exports = {
     getUserByToken: getUserByToken,
     addFollow: addFollow,
     deleteFollow: deleteFollow,
-    getFollows: getFollows
+    getFollows: getFollows,
+    getUserById: getUserById
 };
