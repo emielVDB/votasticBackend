@@ -18,7 +18,10 @@ var schema = new Schema({
         voteIndex: Number
     }],
 
-    reactions: [String],
+    reactions: [{
+        content: String,
+        uploadTime: Date
+    }],
     tags: [String],
     uploadTime: Date,
 

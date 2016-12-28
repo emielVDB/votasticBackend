@@ -53,6 +53,7 @@ function secureSocketUser(socket) {
     }
 
     function reactionSubmit(msg) {
+        reactionRequest = JSON.parse(msg);
 
     }
 

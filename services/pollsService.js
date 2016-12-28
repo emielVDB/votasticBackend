@@ -25,6 +25,17 @@ function getTenRandomPolls() {
     });
 }
 
+function getPollById(pollId) {
+    return new Promise(function (resolve, reject) {
+        Poll.findOne({"_id": pollId}, function(err, results) {
+            if (err) return reject(err);
+
+            resolve(results);
+
+        });
+    });
+}
+
 function findPolls(findRequest) {
     return new Promise(function (resolve, reject) {
         var re = new RegExp(findRequest.text, 'i');
@@ -98,6 +109,7 @@ function addVote(pollId, voteIndex, userId) {
 module.exports = {
     savePoll: savePoll,
     getTenRandomPolls: getTenRandomPolls,
+    getPollById: getPollById,
     findPolls: findPolls,
     findByPageIdList: findByPageIdList,
     findByPageId: findByPageId,
