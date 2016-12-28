@@ -53,8 +53,12 @@ function secureSocketUser(socket) {
     }
 
     function reactionSubmit(msg) {
-        reactionRequest = JSON.parse(msg);
+        msg = JSON.parse(msg);
+        var addReactionObject = {content: msg.content, uploadTime: Date.now()};
 
+        self.socket.broadcast
+            .to('poll'+msg.pollId)
+            .emit('poll'+msg.pollId, JSON.stringify({kind: "addReaction", addReactionResponse: addReactionObject}));
     }
 
     socket.on('disconnect', function(){

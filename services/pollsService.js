@@ -106,6 +106,25 @@ function addVote(pollId, voteIndex, userId) {
     });
 }
 
+function getReactions(getReactionRequest) {
+    return new Promise(function (resolve, reject) {
+        Poll.findOne(
+            {
+                _id: getReactionRequest.pollId,
+                "reactions.uploadTime": {$lt: getReactionRequest.maxUploadTime}
+            },
+
+
+            {reactions: {$slice: 5}},
+
+            function (err, model) {
+                if (err != null) return reject(err);
+
+                resolve(model);
+            });
+    });
+}
+
 module.exports = {
     savePoll: savePoll,
     getTenRandomPolls: getTenRandomPolls,
@@ -113,5 +132,6 @@ module.exports = {
     findPolls: findPolls,
     findByPageIdList: findByPageIdList,
     findByPageId: findByPageId,
-    addVote: addVote
+    addVote: addVote,
+    getReactions: getReactions
 };
