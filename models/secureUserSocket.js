@@ -59,6 +59,11 @@ function secureSocketUser(socket) {
         self.socket.broadcast
             .to('poll'+msg.pollId)
             .emit('poll'+msg.pollId, JSON.stringify({kind: "addReaction", addReactionResponse: addReactionObject}));
+
+        pollsService.addReaction(msg.pollId, msg.content, Date(addReactionObject.uploadTime), self.userId)
+            .then(function (result) {
+
+            });
     }
 
     socket.on('disconnect', function(){

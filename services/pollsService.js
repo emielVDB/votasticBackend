@@ -115,13 +115,39 @@ function getReactions(getReactionRequest) {
             },
 
 
-            {reactions: {$slice: 5}},
+            {reactions: {$slice: 5}, _id: 0, tags: 0, votes: 0, uploadTime: 0, options:0},
 
             function (err, model) {
                 if (err != null) return reject(err);
 
                 resolve(model);
             });
+    });
+}
+
+function addReaction(pollId, content, time, userId) {
+
+    return new Promise(function (resolve, reject) {
+        Poll.findByIdAndUpdate(
+            pollId,
+            {
+                $push: {
+                    "reactions": {
+                        $each: [ {
+                            content: content,
+                            uploadTime: time
+                        } ],
+                        $position: 0
+                    }
+                }
+            },
+            {safe: true, upsert: true, new: true},
+            function (err, model) {
+                if (err != null) return reject(err);
+
+                resolve(model);
+            }
+        );
     });
 }
 
@@ -133,5 +159,6 @@ module.exports = {
     findByPageIdList: findByPageIdList,
     findByPageId: findByPageId,
     addVote: addVote,
-    getReactions: getReactions
+    getReactions: getReactions,
+    addReaction: addReaction
 };

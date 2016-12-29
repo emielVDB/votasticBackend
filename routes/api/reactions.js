@@ -8,7 +8,7 @@ var router = express.Router();
 
 var constants = require("../../models/constants");
 var GetReactionRequest = require('../../models/requests/getReactionsRequest');
-var ReactionListResponse = require('../../models/responses/pollListResponse');
+var ReactionListResponse = require('../../models/responses/reactionListResponse');
 var pollsService = require('../../services/pollsService');
 
 /* GET home page. */
