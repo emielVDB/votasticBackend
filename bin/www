@@ -23,6 +23,13 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
 
 var io = require('socket.io')(server);
 /*
@@ -32,15 +39,7 @@ io.on('connection', function(client){
   console.log('a user connected');
   new SecureUserSocket(client);
 });
-io.listen(port);
 
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.
