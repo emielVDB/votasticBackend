@@ -7,7 +7,10 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var authService = require('./services/authenticatorService');
 
-mongoose.connect("localhost:27017/votastic");
+
+var mongUser = "vAdmin";
+var mongPass = "xY58mti90rz";
+mongoose.connect("mongodb://"+mongUser+":"+mongPass+"@ds141428.mlab.com:41428/votastic");
 
 var index = require('./routes/index');
 var users = require('./routes/users');
