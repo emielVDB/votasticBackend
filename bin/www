@@ -32,7 +32,7 @@ io.on('connection', function(client){
   console.log('a user connected');
   new SecureUserSocket(client);
 });
-io.listen(8080);
+io.listen(port);
 
 /**
  * Listen on provided port, on all network interfaces.
