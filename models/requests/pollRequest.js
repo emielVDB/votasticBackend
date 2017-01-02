@@ -18,7 +18,6 @@ function pollRequest() {
     this.fromInputObject = function (inputObject, userId) {
         return new Promise(function(resolve, reject){
             if(typeof inputObject.question != "string") reject(new Error("Incorrect inputObjectj"));
-            if( Object.prototype.toString.call( inputObject.tags ) != '[object Array]')reject(new Error("Incorrect inputObjectje"));
             if( Object.prototype.toString.call( inputObject.options ) != '[object Array]')reject(new Error("Incorrect inputObjectjek"));
 
             self.question = inputObject.question;
