@@ -7,10 +7,11 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var authService = require('./services/authenticatorService');
 
+var env = process.env.NODE_ENV || 'development';
+var config = require('./config')[env];
 
-var mongUser = "vAdmin";
-var mongPass = "xY58mti90rz";
-mongoose.connect("mongodb://"+mongUser+":"+mongPass+"@ds141428.mlab.com:41428/votastic");
+
+mongoose.connect(config.db);
 
 var index = require('./routes/index');
 var users = require('./routes/users');

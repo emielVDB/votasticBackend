@@ -12,7 +12,7 @@ function secureSocketUser(socket) {
     this.socket = socket;
 
     socket.on('authenticate', function(msg){
-        console.log('trying to authenticate: ' + msg);
+        // console.log('trying to authenticate: ' + msg);
 
         var promise = userService.getUserByToken(msg);
         promise.then(function (result) {

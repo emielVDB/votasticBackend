@@ -36,7 +36,7 @@ var io = require('socket.io')(server);
  Create socket listener
  */
 io.on('connection', function(client){
-  console.log('a user connected');
+  // console.log('a user connected');
   new SecureUserSocket(client);
 });
 
@@ -100,3 +100,5 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+module.exports = app;
