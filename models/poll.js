@@ -22,6 +22,9 @@ var schema = new Schema({
         content: String,
         uploadTime: Date
     }],
+
+    images: [String],
+
     tags: [String],
     uploadTime: Date,
 

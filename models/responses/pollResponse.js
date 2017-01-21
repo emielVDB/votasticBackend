@@ -18,6 +18,7 @@ function pollResponse() {
     this.uploadTime = 0;
     this.pageId = null;
     this.pageTitle = null;
+    this.images = [];
 
     this.fromDBObject = function (inputObject, userId) {
         return new Promise(function(resolve, reject){
@@ -28,6 +29,7 @@ function pollResponse() {
             self.uploadTime = inputObject.uploadTime.getTime();
             self.pageId = inputObject.pageId;
             self.pageTitle = inputObject.pageTitle;
+            self.images = inputObject.images;
 
             for(var loopnr = 0; loopnr < inputObject.votes.length && self.choiceIndex == -1; loopnr++){
                 if(userId == inputObject.votes[loopnr].userId){

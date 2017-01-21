@@ -44,7 +44,10 @@ function deleteFollow(pageId, userId) {
     return new Promise(function (resolve, reject) {
         User.findByIdAndUpdate(
             userId,
-            {$pull: {"followingPages": pageId}},
+            {
+                $pull: {"followingPages": pageId},
+                $pull: { "followingPages": { score: 8 , item: "B" } }
+            },
             {safe: true, upsert: true, new : true},
             function(err, model) {
                 if(err != null) return reject(err);

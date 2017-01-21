@@ -14,6 +14,7 @@ function pollRequest() {
     this.options = [];
     this.tags = [];
     this.pageId = "";
+    this.numberOfImages = 0;
     
     this.fromInputObject = function (inputObject, userId) {
         return new Promise(function(resolve, reject){
@@ -26,6 +27,7 @@ function pollRequest() {
             self.userId = userId;
             self.uploadTime = Date.now();
             self.pageId = inputObject.pageId;
+            self.numberOfImages = inputObject.numberOfImages;
             resolve(self);
         });
     };
@@ -33,10 +35,15 @@ function pollRequest() {
     this.toPollObject = function () {
         return new Promise(function (resolve, reject) {
             var options = [];
+            var imageIds = [];
             var pageId = null;
             var pageTitle = null;
             for(var loopnr = 0; loopnr < self.options.length; loopnr++){
                 options.push({content: self.options[loopnr], votes: 0});
+            }
+
+            for(loopnr = 0; loopnr < self.numberOfImages; loopnr++){
+                imageIds.push(makeid(30));
             }
 
             if(self.pageId == null){
@@ -71,7 +78,8 @@ function pollRequest() {
                     tags: self.tags,
                     uploadTime: self.uploadTime,
                     pageId: pageId,
-                    pageTitle: pageTitle
+                    pageTitle: pageTitle,
+                    images: imageIds
                 });
 
                 resolve(poll);
@@ -79,6 +87,17 @@ function pollRequest() {
         });
     }
 
+}
+
+function makeid(count)
+{
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for( var i=0; i < count; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
 }
 
 module.exports = pollRequest;

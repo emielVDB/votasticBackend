@@ -36,6 +36,17 @@ function getPollById(pollId) {
     });
 }
 
+function getImagesFromPollById(pollId) {
+    return new Promise(function (resolve, reject) {
+        Poll.findOne({"_id": pollId},{images: 1}, function(err, results) {
+            if (err) return reject(err);
+
+            resolve(results);
+
+        });
+    });
+}
+
 function findPolls(findRequest) {
     return new Promise(function (resolve, reject) {
         var re = new RegExp(findRequest.text, 'i');
@@ -160,5 +171,6 @@ module.exports = {
     findByPageId: findByPageId,
     addVote: addVote,
     getReactions: getReactions,
-    addReaction: addReaction
+    addReaction: addReaction,
+    getImagesFromPollById: getImagesFromPollById
 };
