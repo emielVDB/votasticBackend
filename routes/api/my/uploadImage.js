@@ -8,9 +8,17 @@ var router = express.Router();
 var multer  = require('multer');
 var upload = multer({ dest: '../../../tmp/' });
 
-const fs = require('fs');
-
 var pollService = require("../../../services/pollsService");
+
+var fs = require('fs'),
+    S3FS = require('s3fs'),
+    s3fsImpl = new S3FS('votastic', {
+        region: "eu-central-1",
+        accessKeyId: 'AKIAIBW4PIENTJ43372Q',
+        secretAccessKey: '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'
+    });
+
+// Create our bucket if it doesn't exist
 
 
 /* GET home page. */
@@ -18,14 +26,20 @@ router.post('/', upload.single('picture'), function(req, res, next) {
 
     pollService.getImagesFromPollById(req.query.pollId)
         .then(function (poll) {
+            var file = req.file;
+            var stream = fs.createReadStream(file.path);
+            var imageIndex = parseInt(req.query.imageIndex);
+            var imageId = poll.images[imageIndex];
+            var newFileName = imageId+".jpg";
 
-            fs.readFile(req.file.path, function (err, data) {
-                var imageIndex = parseInt(req.query.imageIndex);
-                var imageId = poll.images[imageIndex];
-                var newPath = "public/images/"+imageId+".jpg";
-                fs.writeFile(newPath, data, function (err) {
-                    res.json("done");
-                });
+            var writeStream = s3fsImpl.createWriteStream(newFileName);
+            writeStream.on('pipe', (src) => {
+                console.log('something is piping into the writer');
+            });
+            var streamCallback = stream.pipe(writeStream);
+            streamCallback.on('finish', function () {
+                console.log("piping is done!");
+                res.json("{uploaded: true}");
             });
         });
 });
